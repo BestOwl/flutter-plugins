@@ -113,6 +113,30 @@ class MultiWindowManager {
   func getAllSubWindowIds() -> [Int64] {
     return windows.keys.filter { $0 != 0 }
   }
+
+  func setTitleBarStyle(windowId: Int64, titleBarStyle: String, windowButtonVisibility: Bool) {
+    guard let window = windows[windowId] else {
+      debugPrint("window \(windowId) not exists.")
+      return
+    }
+    window.setTitleBarStyle(titleBarStyle: titleBarStyle, windowButtonVisibility: windowButtonVisibility)
+  }
+  
+  func setOpacity(windowId: Int64, opacity: CGFloat) {
+    guard let window = windows[windowId] else {
+      debugPrint("window \(windowId) not exists.")
+      return
+    }
+    window.setOpacity(opacity: opacity)
+  }
+  
+  func setBackgroundColor(windowId: Int64, color: NSColor) {
+    guard let window = windows[windowId] else {
+      debugPrint("window \(windowId) not exists.")
+      return
+    }
+    window.setBackgroundColor(color: color)
+  }
 }
 
 protocol WindowManagerDelegate: AnyObject {

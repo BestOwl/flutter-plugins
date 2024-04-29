@@ -54,6 +54,36 @@ class BaseFlutterWindow: NSObject {
   func setFrameAutosaveName(name: String) {
     window.setFrameAutosaveName(name)
   }
+    
+  func setTitleBarStyle(titleBarStyle: String, windowButtonVisibility: Bool) {
+    if (titleBarStyle == "hidden") {
+      window.titleVisibility = .hidden
+      window.titlebarAppearsTransparent = true
+      window.styleMask.insert(.fullSizeContentView)
+    } else {
+      window.titleVisibility = .visible
+      window.titlebarAppearsTransparent = false
+      window.styleMask.remove(.fullSizeContentView)
+    }
+
+    window.isOpaque = false
+    window.hasShadow = true
+    
+    let titleBarView: NSView = (window.standardWindowButton(.closeButton)?.superview)!.superview!
+    titleBarView.isHidden = false
+    
+    window.standardWindowButton(.closeButton)?.isHidden = !windowButtonVisibility
+    window.standardWindowButton(.miniaturizeButton)?.isHidden = !windowButtonVisibility
+    window.standardWindowButton(.zoomButton)?.isHidden = !windowButtonVisibility
+  }
+  
+  func setOpacity(opacity: CGFloat) {
+    window.alphaValue = opacity
+  }
+  
+  func setBackgroundColor(color: NSColor) {
+    window.backgroundColor = color
+  }
 }
 
 class FlutterWindow: BaseFlutterWindow {

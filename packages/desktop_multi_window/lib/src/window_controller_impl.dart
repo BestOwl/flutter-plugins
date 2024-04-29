@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 
 import 'channels.dart';
+import 'title_bar_style.dart';
 import 'window_controller.dart';
 
 class WindowControllerMainImpl extends WindowController {
@@ -75,6 +76,35 @@ class WindowControllerMainImpl extends WindowController {
     return _channel.invokeMethod('setFrameAutosaveName', <String, dynamic>{
       'windowId': _id,
       'name': name,
+    });
+  }
+
+  @override
+  Future<void> setTitleBarStyle(TitleBarStyle titleBarStyle,
+      {bool windowButtonVisibility = true}) {
+    return _channel.invokeMethod('setTitleBarStyle', <String, dynamic>{
+      'windowId': _id,
+      'titleBarStyle': titleBarStyle.name,
+      'windowButtonVisibility': windowButtonVisibility,
+    });
+  }
+
+  @override
+  Future<void> setOpacity(double opacity) {
+    return _channel.invokeMethod('setOpacity', <String, dynamic>{
+      'windowId': _id,
+      'opacity': opacity,
+    });
+  }
+
+  @override
+  Future<void> setBackgroundColor(Color backgroundColor) {
+    return _channel.invokeMethod('setBackgroundColor', <String, dynamic>{
+      'windowId': _id,
+      'backgroundColorA': backgroundColor.alpha,
+      'backgroundColorR': backgroundColor.red,
+      'backgroundColorG': backgroundColor.green,
+      'backgroundColorB': backgroundColor.blue,
     });
   }
 }

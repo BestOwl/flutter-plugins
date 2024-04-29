@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import '../desktop_multi_window.dart';
 import 'window_controller_impl.dart';
 
 /// The [WindowController] instance that is used to control this window.
@@ -45,4 +46,13 @@ abstract class WindowController {
 
   /// Available only on macOS.
   Future<void> setFrameAutosaveName(String name);
+
+  Future<void> setTitleBarStyle(
+    TitleBarStyle titleBarStyle, {
+    bool windowButtonVisibility = true,
+  });
+
+  Future<void> setOpacity(double opacity);
+
+  Future<void> setBackgroundColor(Color backgroundColor);
 }

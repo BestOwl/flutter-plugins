@@ -67,12 +67,12 @@ public class FlutterMultiWindowPlugin: NSObject, FlutterPlugin {
       let title = arguments["title"] as! String
       MultiWindowManager.shared.setTitle(windowId: windowId, title: title)
       result(nil)
-	case "resizable":
-	  let arguments = call.arguments as! [String: Any?]
-	  let windowId = arguments["windowId"] as! Int64
-	  let resizable = arguments["resizable"] as! Bool
-	  MultiWindowManager.shared.resizable(windowId: windowId, resizable: resizable)
-	  result(nil)
+    case "resizable":
+      let arguments = call.arguments as! [String: Any?]
+      let windowId = arguments["windowId"] as! Int64
+      let resizable = arguments["resizable"] as! Bool
+      MultiWindowManager.shared.resizable(windowId: windowId, resizable: resizable)
+      result(nil)
     case "setFrameAutosaveName":
       let arguments = call.arguments as! [String: Any?]
       let windowId = arguments["windowId"] as! Int64
@@ -82,6 +82,42 @@ public class FlutterMultiWindowPlugin: NSObject, FlutterPlugin {
     case "getAllSubWindowIds":
       let subWindowIds = MultiWindowManager.shared.getAllSubWindowIds()
       result(subWindowIds)
+    case "setTitleBarStyle":
+      let arguments = call.arguments as! [String: Any?]
+      let windowId = arguments["windowId"] as! Int64
+      let titleBarStyle = arguments["titleBarStyle"] as! String
+      let windowButtonVisibility = arguments["windowButtonVisibility"] as! Bool
+      MultiWindowManager.shared.setTitleBarStyle(windowId: windowId, titleBarStyle: titleBarStyle, windowButtonVisibility: windowButtonVisibility)
+      result(nil)
+    case "setOpacity":
+      let arguments = call.arguments as! [String: Any?]
+      let windowId = arguments["windowId"] as! Int64
+      let opacity = CGFloat(truncating: arguments["opacity"] as! NSNumber)
+      MultiWindowManager.shared.setOpacity(windowId: windowId, opacity: opacity)
+      result(nil)
+    case "setBackgroundColor":
+      let arguments = call.arguments as! [String: Any?]
+      let windowId = arguments["windowId"] as! Int64
+      let backgroundColorA = arguments["backgroundColorA"] as! Int
+      let backgroundColorR = arguments["backgroundColorR"] as! Int
+      let backgroundColorG = arguments["backgroundColorG"] as! Int
+      let backgroundColorB = arguments["backgroundColorB"] as! Int
+      let isTransparent: Bool = backgroundColorA == 0
+        && backgroundColorR == 0
+        && backgroundColorG == 0
+        && backgroundColorB == 0;
+      
+      if (isTransparent) {
+        MultiWindowManager.shared.setBackgroundColor(windowId: windowId, color: NSColor.clear)
+      } 
+      else {
+        let rgbR = CGFloat(backgroundColorR) / 255
+        let rgbG = CGFloat(backgroundColorG) / 255
+        let rgbB = CGFloat(backgroundColorB) / 255
+        let rgbA = CGFloat(backgroundColorA) / 255
+        MultiWindowManager.shared.setBackgroundColor(windowId: windowId, color: NSColor(red: rgbR, green: rgbG, blue: rgbB, alpha: rgbA))
+      }
+      result(nil)
     default:
       result(FlutterMethodNotImplemented)
     }
