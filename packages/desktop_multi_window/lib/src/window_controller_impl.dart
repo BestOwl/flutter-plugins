@@ -107,4 +107,52 @@ class WindowControllerMainImpl extends WindowController {
       'backgroundColorB': backgroundColor.blue,
     });
   }
+
+  @override
+  Future<bool> isMaximized() {
+    // TODO: implement isMaximized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isMinimized() {
+    // TODO: implement isMinimized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> maximize({bool vertically = false}) {
+    // TODO: implement maximize
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> maximizeOrRestore() {
+    // TODO: implement maximizeOrRestore
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> minimize() {
+    // TODO: implement minimize
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> restore() {
+    // TODO: implement restore
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> startDragging() {
+    // TODO: implement startDragging
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> unmaximize() {
+    // TODO: implement unmaximize
+    throw UnimplementedError();
+  }
 }
