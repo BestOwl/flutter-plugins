@@ -102,6 +102,9 @@ class FlutterWindow: BaseFlutterWindow {
     let project = FlutterDartProject()
     project.dartEntrypointArguments = ["multi_window", "\(windowId)", arguments]
     let flutterViewController = FlutterViewController(project: project)
+    // Make the background of FlutterViewController in sub-window transparent
+    // to enable transparent sub-window
+    flutterViewController.backgroundColor = .clear
     window.contentViewController = flutterViewController
 
     let plugin = flutterViewController.registrar(forPlugin: "FlutterMultiWindowPlugin")
