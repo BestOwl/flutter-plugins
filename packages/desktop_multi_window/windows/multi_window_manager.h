@@ -35,6 +35,12 @@ class MultiWindowManager : public std::enable_shared_from_this<MultiWindowManage
 
   void SetTitle(int64_t id, const std::string &title);
 
+  void SetTitleBarStyle(int64_t id, TitleBarStyle titleBarStyle, bool windowButtonVisibility);
+
+  void SetOpacity(int64_t id, double_t opacity);
+
+  void SetBackgroundColor(int64_t id, int32_t backgroundColorA, int32_t backgroundColorR, int32_t backgroundColorG, int32_t backgroundColorB);
+
   std::vector<int64_t> GetAllSubWindowIds();
 
   void OnWindowClose(int64_t id) override;

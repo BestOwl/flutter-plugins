@@ -144,6 +144,21 @@ LRESULT CALLBACK FlutterWindow::WndProc(HWND window, UINT message, WPARAM wparam
   return DefWindowProc(window, message, wparam, lparam);
 }
 
+bool IsWindows11OrGreater() {
+  DWORD dwVersion = 0;
+  DWORD dwBuild = 0;
+
+#pragma warning(push)
+#pragma warning(disable : 4996)
+  dwVersion = GetVersion();
+  // Get the build number.
+  if (dwVersion < 0x80000000)
+    dwBuild = (DWORD)(HIWORD(dwVersion));
+#pragma warning(pop)
+
+  return dwBuild < 22000;
+}
+
 LRESULT FlutterWindow::MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam) {
 
   // Give Flutter, including plugins, an opportunity to handle window messages.
@@ -203,6 +218,47 @@ LRESULT FlutterWindow::MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LP
         SetFocus(child_content_);
       }
       return 0;
+    }
+
+    case WM_NCCALCSIZE: {
+      // TODO: handle full screen mode
+
+      // This must always be before handling title_bar_style_ == "hidden" so
+      // the `if TitleBarStyle.hidden` doesn't get executed.
+      if (is_frameless) {
+        NCCALCSIZE_PARAMS* sz = reinterpret_cast<NCCALCSIZE_PARAMS*>(lparam);
+        if (IsMaximized()) {
+          // Add borders when maximized so app doesn't get cut off.
+          sz->rgrc[0].left += 8;
+          sz->rgrc[0].top += 8;
+          sz->rgrc[0].right -= 8;
+          sz->rgrc[0].bottom -= 9;
+        }
+        return 0;
+      }
+
+      // This must always be last.
+      if (wparam && title_bar_style == TitleBarStyle::hidden) {
+        NCCALCSIZE_PARAMS* sz = reinterpret_cast<NCCALCSIZE_PARAMS*>(lparam);
+
+        // Add 8 pixel to the top border when maximized so the app isn't cut off
+        if (IsMaximized()) {
+          sz->rgrc[0].top += 8;
+        }
+        else {
+          // on windows 10, if set to 0, there's a white line at the top
+          // of the app and I've yet to find a way to remove that.
+          sz->rgrc[0].top += IsWindows11OrGreater() ? 0 : 1;
+        }
+        sz->rgrc[0].right -= 8;
+        sz->rgrc[0].bottom -= 8;
+        sz->rgrc[0].left -= -8;
+
+        // Previously (WVR_HREDRAW | WVR_VREDRAW), but returning 0 or 1 doesn't
+        // actually break anything so I've set it to 0. Unless someone pointed a
+        // problem in the future.
+        return 0;
+      }
     }
     default: break;
   }

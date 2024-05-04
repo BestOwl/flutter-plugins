@@ -129,6 +129,27 @@ void MultiWindowManager::Center(int64_t id) {
   }
 }
 
+void MultiWindowManager::SetTitleBarStyle(int64_t id, TitleBarStyle titleBarStyle, bool windowButtonVisibility) {
+  auto window = windows_.find(id);
+  if (window != windows_.end()) {
+    window->second->SetTitleBarStyle(titleBarStyle, windowButtonVisibility);
+  }
+}
+
+void MultiWindowManager::SetOpacity(int64_t id, double_t opacity) {
+  auto window = windows_.find(id);
+  if (window != windows_.end()) {
+    window->second->SetOpacity(opacity);
+  }
+}
+
+void MultiWindowManager::SetBackgroundColor(int64_t id, int32_t backgroundColorA, int32_t backgroundColorR, int32_t backgroundColorG, int32_t backgroundColorB) {
+  auto window = windows_.find(id);
+  if (window != windows_.end()) {
+    window->second->SetBackgroundColor(backgroundColorA, backgroundColorR, backgroundColorG, backgroundColorB);
+  }
+}
+
 std::vector<int64_t> MultiWindowManager::GetAllSubWindowIds() {
   std::vector<int64_t> ids;
   for (auto &window : windows_) {

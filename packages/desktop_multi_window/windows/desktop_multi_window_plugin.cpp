@@ -96,6 +96,32 @@ void DesktopMultiWindowPlugin::HandleMethodCall(
     auto window_ids = MultiWindowManager::Instance()->GetAllSubWindowIds();
     result->Success(flutter::EncodableValue(window_ids));
     return;
+  } else if (method_call.method_name() == "setTitleBarStyle") {
+    auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
+    auto titleBarStyleString = std::get<std::string>(arguments->at(flutter::EncodableValue("titleBarStyle")));
+    auto windowButtonVisibility = std::get<bool>(arguments->at(flutter::EncodableValue("windowButtonVisibility")));
+    TitleBarStyle titleBarStyle = TitleBarStyle::normal;
+    if (titleBarStyleString == "hidden") {
+      titleBarStyle = TitleBarStyle::hidden;
+    }
+    MultiWindowManager::Instance()->SetTitleBarStyle(window_id, titleBarStyle, windowButtonVisibility);
+    result->Success();
+  } else if (method_call.method_name() == "setOpacity") {
+    auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
+    auto opacity = std::get<double_t>(arguments->at(flutter::EncodableValue("opacity")));
+    MultiWindowManager::Instance()->SetOpacity(window_id, opacity);
+    result->Success();
+  } else if (method_call.method_name() == "setBackgroundColor") {
+    auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
+    auto backgroundColorA = std::get<int32_t>(arguments->at(flutter::EncodableValue("backgroundColorA")));
+    auto backgroundColorR = std::get<int32_t>(arguments->at(flutter::EncodableValue("backgroundColorR")));
+    auto backgroundColorG = std::get<int32_t>(arguments->at(flutter::EncodableValue("backgroundColorG")));
+    auto backgroundColorB = std::get<int32_t>(arguments->at(flutter::EncodableValue("backgroundColorB")));
+    MultiWindowManager::Instance()->SetBackgroundColor(window_id, backgroundColorA, backgroundColorR, backgroundColorG, backgroundColorB);
+    result->Success();
   }
   result->NotImplemented();
 }

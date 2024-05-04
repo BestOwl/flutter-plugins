@@ -4,6 +4,10 @@
 
 #include "base_flutter_window.h"
 
+#include <dwmapi.h>
+
+#pragma comment(lib, "dwmapi.lib")
+
 namespace {
 void CenterRectToMonitor(LPRECT prc) {
   HMONITOR hMonitor;
@@ -100,4 +104,78 @@ void BaseFlutterWindow::Hide() {
     return;
   }
   ShowWindow(handle, SW_HIDE);
+}
+
+void BaseFlutterWindow::SetTitleBarStyle(TitleBarStyle titleBarStyle, bool windowButtonVisibility) {
+  title_bar_style = titleBarStyle;
+  // Enables the ability to go from setAsFrameless() to
+  // TitleBarStyle.normal/hidden
+  is_frameless = false;
+  
+  MARGINS margins = { 0, 0, 0, 0 };
+  HWND hWnd = GetWindowHandle();
+  RECT rect;
+  GetWindowRect(hWnd, &rect);
+  DwmExtendFrameIntoClientArea(hWnd, &margins);
+  SetWindowPos(hWnd, nullptr, rect.left, rect.top, 0, 0,
+    SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOMOVE | SWP_NOSIZE |
+    SWP_FRAMECHANGED);
+}
+
+void BaseFlutterWindow::SetOpacity(double_t opacity) {
+  HWND hWnd = GetWindowHandle();
+  long gwlExStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
+  SetWindowLong(hWnd, GWL_EXSTYLE, gwlExStyle | WS_EX_LAYERED);
+  SetLayeredWindowAttributes(hWnd, 0, static_cast<int8_t>(255 * opacity), LWA_ALPHA);
+}
+
+void BaseFlutterWindow::SetBackgroundColor(int32_t backgroundColorA, int32_t backgroundColorR, int32_t backgroundColorG, int32_t backgroundColorB) {
+  HWND hWnd = GetWindowHandle();
+  const HINSTANCE hModule = LoadLibrary(TEXT("user32.dll"));
+  if (hModule) {
+    typedef enum _ACCENT_STATE {
+      ACCENT_DISABLED = 0,
+      ACCENT_ENABLE_GRADIENT = 1,
+      ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
+      ACCENT_ENABLE_BLURBEHIND = 3,
+      ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,
+      ACCENT_ENABLE_HOSTBACKDROP = 5,
+      ACCENT_INVALID_STATE = 6
+    } ACCENT_STATE;
+    struct ACCENTPOLICY {
+      int nAccentState;
+      int nFlags;
+      int nColor;
+      int nAnimationId;
+    };
+    struct WINCOMPATTRDATA {
+      int nAttribute;
+      PVOID pData;
+      ULONG ulDataSize;
+    };
+    typedef BOOL(WINAPI* pSetWindowCompositionAttribute)(HWND,
+      WINCOMPATTRDATA*);
+    const pSetWindowCompositionAttribute SetWindowCompositionAttribute =
+      (pSetWindowCompositionAttribute)GetProcAddress(
+        hModule, "SetWindowCompositionAttribute");
+    if (SetWindowCompositionAttribute) {
+      int32_t accent_state = ACCENT_ENABLE_TRANSPARENTGRADIENT;
+      ACCENTPOLICY policy = {
+          accent_state, 2,
+          ((backgroundColorA << 24) + (backgroundColorB << 16) +
+           (backgroundColorG << 8) + (backgroundColorR)),
+          0 };
+      WINCOMPATTRDATA data = { 19, &policy, sizeof(policy) };
+      SetWindowCompositionAttribute(hWnd, &data);
+    }
+    FreeLibrary(hModule);
+  }
+}
+
+bool BaseFlutterWindow::IsMaximized() {
+  HWND mainWindow = GetWindowHandle();
+  WINDOWPLACEMENT windowPlacement;
+  GetWindowPlacement(mainWindow, &windowPlacement);
+
+  return windowPlacement.showCmd == SW_MAXIMIZE;
 }
