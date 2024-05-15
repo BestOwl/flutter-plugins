@@ -146,8 +146,7 @@ class WindowControllerMainImpl extends WindowController {
 
   @override
   Future<void> startDragging() {
-    // TODO: implement startDragging
-    throw UnimplementedError();
+    return _channel.invokeMethod('startDragging', _id);
   }
 
   @override

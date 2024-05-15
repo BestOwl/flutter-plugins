@@ -107,12 +107,14 @@ void DesktopMultiWindowPlugin::HandleMethodCall(
     }
     MultiWindowManager::Instance()->SetTitleBarStyle(window_id, titleBarStyle, windowButtonVisibility);
     result->Success();
+    return;
   } else if (method_call.method_name() == "setOpacity") {
     auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
     auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
     auto opacity = std::get<double_t>(arguments->at(flutter::EncodableValue("opacity")));
     MultiWindowManager::Instance()->SetOpacity(window_id, opacity);
     result->Success();
+    return;
   } else if (method_call.method_name() == "setBackgroundColor") {
     auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
     auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
@@ -122,6 +124,12 @@ void DesktopMultiWindowPlugin::HandleMethodCall(
     auto backgroundColorB = std::get<int32_t>(arguments->at(flutter::EncodableValue("backgroundColorB")));
     MultiWindowManager::Instance()->SetBackgroundColor(window_id, backgroundColorA, backgroundColorR, backgroundColorG, backgroundColorB);
     result->Success();
+    return;
+  } else if (method_call.method_name() == "startDragging") {
+    auto window_id = method_call.arguments()->LongValue();
+    MultiWindowManager::Instance()->StartDragging(window_id);
+    result->Success();
+    return;
   }
   result->NotImplemented();
 }

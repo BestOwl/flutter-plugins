@@ -40,6 +40,8 @@ class BaseFlutterWindow {
 
   bool IsMaximized();
 
+  void StartDragging();
+
  protected:
 
   virtual HWND GetWindowHandle() = 0;

@@ -41,6 +41,8 @@ class MultiWindowManager : public std::enable_shared_from_this<MultiWindowManage
 
   void SetBackgroundColor(int64_t id, int32_t backgroundColorA, int32_t backgroundColorR, int32_t backgroundColorG, int32_t backgroundColorB);
 
+  void StartDragging(int64_t id);
+
   std::vector<int64_t> GetAllSubWindowIds();
 
   void OnWindowClose(int64_t id) override;

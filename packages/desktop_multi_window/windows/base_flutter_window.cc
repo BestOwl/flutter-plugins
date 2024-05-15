@@ -179,3 +179,9 @@ bool BaseFlutterWindow::IsMaximized() {
 
   return windowPlacement.showCmd == SW_MAXIMIZE;
 }
+
+void BaseFlutterWindow::StartDragging() {
+  HWND hWnd = GetWindowHandle();
+  ReleaseCapture();
+  SendMessage(hWnd, WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+}
