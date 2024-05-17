@@ -154,4 +154,16 @@ class WindowControllerMainImpl extends WindowController {
     // TODO: implement unmaximize
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> setMaximumSize(Size size) {
+    // TODO: implement setMaximumSize
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setMinimumSize(Size size) {
+    // TODO: implement setMinimumSize
+    throw UnimplementedError();
+  }
 }

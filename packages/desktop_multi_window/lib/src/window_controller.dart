@@ -81,4 +81,8 @@ abstract class WindowController {
 
   /// Restores the window from minimized state to its previous state.
   Future<void> restore();
+
+  Future<void> setMinimumSize(Size size);
+
+  Future<void> setMaximumSize(Size size);
 }
