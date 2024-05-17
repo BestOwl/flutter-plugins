@@ -158,6 +158,7 @@ class WindowControllerMainImpl extends WindowController {
   @override
   Future<void> setMaximumSize(Size size) async {
     final Map<String, dynamic> arguments = {
+      'windowId': _id,
       'devicePixelRatio': getDevicePixelRatio(),
       'width': size.width,
       'height': size.height,
@@ -168,6 +169,7 @@ class WindowControllerMainImpl extends WindowController {
   @override
   Future<void> setMinimumSize(Size size) async {
     final Map<String, dynamic> arguments = {
+      'windowId': _id,
       'devicePixelRatio': getDevicePixelRatio(),
       'width': size.width,
       'height': size.height,

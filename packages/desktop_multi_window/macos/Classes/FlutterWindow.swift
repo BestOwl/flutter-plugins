@@ -84,6 +84,14 @@ class BaseFlutterWindow: NSObject {
   func setBackgroundColor(color: NSColor) {
     window.backgroundColor = color
   }
+  
+  func setMinimumSize(minimumSize: NSSize) {
+    window.minSize = minimumSize
+  }
+  
+  func setMaximumSize(maximumSize: NSSize) {
+    window.maxSize = maximumSize
+  }
 }
 
 class FlutterWindow: BaseFlutterWindow {

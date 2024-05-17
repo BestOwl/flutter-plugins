@@ -137,6 +137,22 @@ class MultiWindowManager {
     }
     window.setBackgroundColor(color: color)
   }
+  
+  func setMinimumSize(windowId: Int64, minimumSize: NSSize) {
+    guard let window = windows[windowId] else {
+      debugPrint("window \(windowId) not exists.")
+      return
+    }
+    window.setMinimumSize(minimumSize: minimumSize)
+  }
+  
+  func setMaximumSize(windowId: Int64, maximumSize: NSSize) {
+    guard let window = windows[windowId] else {
+      debugPrint("window \(windowId) not exists.")
+      return
+    }
+    window.setMaximumSize(maximumSize: maximumSize)
+  }
 }
 
 protocol WindowManagerDelegate: AnyObject {

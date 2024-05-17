@@ -118,6 +118,24 @@ public class FlutterMultiWindowPlugin: NSObject, FlutterPlugin {
         MultiWindowManager.shared.setBackgroundColor(windowId: windowId, color: NSColor(red: rgbR, green: rgbG, blue: rgbB, alpha: rgbA))
       }
       result(nil)
+    case "setMinimumSize":
+      let arguments = call.arguments as! [String: Any?]
+      let windowId = arguments["windowId"] as! Int64
+      let minSize: NSSize = NSSize(
+        width: CGFloat((arguments["width"] as! NSNumber).floatValue),
+        height: CGFloat((arguments["height"] as! NSNumber).floatValue)
+      )
+      MultiWindowManager.shared.setMinimumSize(windowId: windowId, minimumSize: minSize)
+      result(nil)
+    case "setMaximumSize":
+      let arguments = call.arguments as! [String: Any?]
+      let windowId = arguments["windowId"] as! Int64
+      let maxSize: NSSize = NSSize(
+        width: CGFloat((arguments["width"] as! NSNumber).floatValue),
+        height: CGFloat((arguments["height"] as! NSNumber).floatValue)
+      )
+      MultiWindowManager.shared.setMaximumSize(windowId: windowId, maximumSize: maxSize)
+      result(nil)
     default:
       result(FlutterMethodNotImplemented)
     }
