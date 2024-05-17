@@ -156,14 +156,28 @@ class WindowControllerMainImpl extends WindowController {
   }
 
   @override
-  Future<void> setMaximumSize(Size size) {
-    // TODO: implement setMaximumSize
-    throw UnimplementedError();
+  Future<void> setMaximumSize(Size size) async {
+    final Map<String, dynamic> arguments = {
+      'devicePixelRatio': getDevicePixelRatio(),
+      'width': size.width,
+      'height': size.height,
+    };
+    await _channel.invokeMethod('setMaximumSize', arguments);
   }
 
   @override
-  Future<void> setMinimumSize(Size size) {
-    // TODO: implement setMinimumSize
-    throw UnimplementedError();
+  Future<void> setMinimumSize(Size size) async {
+    final Map<String, dynamic> arguments = {
+      'devicePixelRatio': getDevicePixelRatio(),
+      'width': size.width,
+      'height': size.height,
+    };
+    await _channel.invokeMethod('setMinimumSize', arguments);
+  }
+
+  double getDevicePixelRatio() {
+    // Subsequent version, remove this deprecated member.
+    // ignore: deprecated_member_use
+    return window.devicePixelRatio;
   }
 }
