@@ -157,6 +157,20 @@ void MultiWindowManager::StartDragging(int64_t id) {
   }
 }
 
+void MultiWindowManager::SetMinimumSize(int64_t id, double devicePixelRatio, double width, double height) {
+  auto window = windows_.find(id);
+  if (window != windows_.end()) {
+    window->second->SetMinimumSize(devicePixelRatio, width, height);
+  }
+}
+
+void MultiWindowManager::SetMaximumSize(int64_t id, double devicePixelRatio, double width, double height) {
+  auto window = windows_.find(id);
+  if (window != windows_.end()) {
+    window->second->SetMaximumSize(devicePixelRatio, width, height);
+  }
+}
+
 std::vector<int64_t> MultiWindowManager::GetAllSubWindowIds() {
   std::vector<int64_t> ids;
   for (auto &window : windows_) {

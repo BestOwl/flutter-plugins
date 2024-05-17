@@ -185,3 +185,23 @@ void BaseFlutterWindow::StartDragging() {
   ReleaseCapture();
   SendMessage(hWnd, WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
 }
+
+void BaseFlutterWindow::SetMinimumSize(double devicePixelRatio, double width, double height) {
+  if (width >= 0 && height >= 0) {
+    pixel_ratio_ = devicePixelRatio;
+    POINT point = {};
+    point.x = static_cast<LONG>(width);
+    point.y = static_cast<LONG>(height);
+    minimum_size_ = point;
+  }
+}
+
+void BaseFlutterWindow::SetMaximumSize(double devicePixelRatio, double width, double height) {
+  if (width >= 0 && height >= 0) {
+    pixel_ratio_ = devicePixelRatio;
+    POINT point = {};
+    point.x = static_cast<LONG>(width);
+    point.y = static_cast<LONG>(height);
+    maximum_size_ = point;
+  }
+}

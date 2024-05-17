@@ -130,6 +130,26 @@ void DesktopMultiWindowPlugin::HandleMethodCall(
     MultiWindowManager::Instance()->StartDragging(window_id);
     result->Success();
     return;
+  } else if (method_call.method_name() == "setMinimumSize") {
+    auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
+    double devicePixelRatio =
+      std::get<double>(arguments->at(flutter::EncodableValue("devicePixelRatio")));
+    double width = std::get<double>(arguments->at(flutter::EncodableValue("width")));
+    double height = std::get<double>(arguments->at(flutter::EncodableValue("height")));
+    MultiWindowManager::Instance()->SetMinimumSize(window_id, devicePixelRatio, width, height);
+    result->Success();
+    return;
+  } else if (method_call.method_name() == "setMaximumSize") {
+    auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    auto window_id = arguments->at(flutter::EncodableValue("windowId")).LongValue();
+    double devicePixelRatio =
+      std::get<double>(arguments->at(flutter::EncodableValue("devicePixelRatio")));
+    double width = std::get<double>(arguments->at(flutter::EncodableValue("width")));
+    double height = std::get<double>(arguments->at(flutter::EncodableValue("height")));
+    MultiWindowManager::Instance()->SetMaximumSize(window_id, devicePixelRatio, width, height);
+    result->Success();
+    return;
   }
   result->NotImplemented();
 }

@@ -259,6 +259,24 @@ LRESULT FlutterWindow::MessageHandler(HWND hwnd, UINT message, WPARAM wparam, LP
         // problem in the future.
         return 0;
       }
+      break;
+    }
+    case WM_GETMINMAXINFO: {
+      MINMAXINFO* info = reinterpret_cast<MINMAXINFO*>(lparam);
+      // For the special "unconstrained" values, leave the defaults.
+      if (minimum_size_.x != 0)
+        info->ptMinTrackSize.x = static_cast<LONG>(
+          minimum_size_.x * pixel_ratio_);
+      if (minimum_size_.y != 0)
+        info->ptMinTrackSize.y = static_cast<LONG>(
+          minimum_size_.y * pixel_ratio_);
+      if (maximum_size_.x != -1)
+        info->ptMaxTrackSize.x = static_cast<LONG>(
+          maximum_size_.x * pixel_ratio_);
+      if (maximum_size_.y != -1)
+        info->ptMaxTrackSize.y = static_cast<LONG>(
+          maximum_size_.y * pixel_ratio_);
+      return 0;
     }
     default: break;
   }

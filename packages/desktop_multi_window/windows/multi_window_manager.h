@@ -43,6 +43,10 @@ class MultiWindowManager : public std::enable_shared_from_this<MultiWindowManage
 
   void StartDragging(int64_t id);
 
+  void SetMinimumSize(int64_t id, double devicePixelRatio, double width, double height);
+
+  void SetMaximumSize(int64_t id, double devicePixelRatio, double width, double height);
+
   std::vector<int64_t> GetAllSubWindowIds();
 
   void OnWindowClose(int64_t id) override;

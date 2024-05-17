@@ -42,12 +42,19 @@ class BaseFlutterWindow {
 
   void StartDragging();
 
+  void SetMinimumSize(double devicePixelRatio, double width, double height);
+
+  void SetMaximumSize(double devicePixelRatio, double width, double height);
+
  protected:
 
   virtual HWND GetWindowHandle() = 0;
 
   bool is_frameless;
   TitleBarStyle title_bar_style;
+  POINT minimum_size_ = { 0, 0 };
+  POINT maximum_size_ = { -1, -1 };
+  double pixel_ratio_ = 1;
 };
 
 #endif //MULTI_WINDOW_WINDOWS_BASE_FLUTTER_WINDOW_H_
